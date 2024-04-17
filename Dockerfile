@@ -25,7 +25,7 @@ ENV DRONE_RUNNER_OS=linux
 ENV DRONE_RUNNER_ARCH=amd64
 ENV DRONE_SERVER_PORT=:80
 ENV DRONE_SERVER_HOST=localhost
-ENV DRONE_DATADOG_ENABLED=true
+ENV DRONE_DATADOG_ENABLED=false
 ENV DRONE_DATADOG_ENDPOINT=https://stats.drone.ci/api/v1/series
 
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
