@@ -50,12 +50,21 @@ steps:
         - stable
 
   - name: email_notification
-    image: drillster/drone-email
+    image: plugins/email
     settings:
       host:
         from_secret: SMTP_HOST
       port:
         from_secret: SMTP_PORT
+      from:
+        from_secret: EMAIL_FROM
+      recipients:
+        from_secret: EMAIL_TO
+      username:
+        from_secret: SMTP_USER
+      password:
+        from_secret: SMTP_PASSWORD
+      recipients_only: true
       subject: "Drone Build {{repo.name}}/{{commit.branch}} {{tag}} {{build.status}}"
       body: >
         {{build.link}}
