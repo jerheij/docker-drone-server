@@ -49,29 +49,42 @@ steps:
       branch:
         - stable
 
-  - name: email_notification
-    image: plugins/email
+  - name: matrix_notification_success
+    image: spotlightkid/drone-matrixchat-notify
     settings:
-      host:
-        from_secret: SMTP_HOST
-      port:
-        from_secret: SMTP_PORT
-      from:
-        from_secret: EMAIL_FROM
-      recipients:
-        from_secret: EMAIL_TO
-      username:
-        from_secret: SMTP_USER
-      password:
-        from_secret: SMTP_PASSWORD
-      recipients_only: true
-      subject: "Drone Build {{repo.name}}/{{commit.branch}} {{tag}} {{build.status}}"
-      body: >
-        {{build.link}}
-      from:
-        from_secret: EMAIL_FROM
-      recipients:
-        from_secret: EMAIL_TO
-      recipients_only: true
+      homeserver:
+        from_secret: MATRIX_SERVER
+      roomid:
+        from_secret: MATRIX_ROOM_ID
+      userid:
+        from_secret: MATRIX_USER_ID
+      accesstoken:
+        from_secret: MATRIX_ACCESS_TOKEN
+      deviceid:
+        from_secret: MATRIX_DEVICE_ID
+      devicename: 'Drone CI'
+      template: |
+        ✅ Drone Build ${DRONE_REPO_NAME}/${DRONE_COMMIT_BRANCH} ${DRONE_TAG} ${DRONE_BUILD_STATUS}
+        ${DRONE_BUILD_LINK}
     when:
-      status: [ success, changed, failure ]
+      status: [ success, changed ]
+
+  - name: matrix_notification_failure
+    image: spotlightkid/drone-matrixchat-notify
+    settings:
+      homeserver:
+        from_secret: MATRIX_SERVER
+      roomid:
+        from_secret: MATRIX_ROOM_ID
+      userid:
+        from_secret: MATRIX_USER_ID
+      accesstoken:
+        from_secret: MATRIX_ACCESS_TOKEN
+      deviceid:
+        from_secret: MATRIX_DEVICE_ID
+      devicename: 'Drone CI'
+      template: |
+        🔴 Drone Build ${DRONE_REPO_NAME}/${DRONE_COMMIT_BRANCH} ${DRONE_TAG} ${DRONE_BUILD_STATUS}
+        ${DRONE_BUILD_LINK}
+    when:
+      status: [ failure ]
