@@ -65,7 +65,6 @@ steps:
       devicename: 'Drone CI'
       template: |
         ✅ Drone Build ${DRONE_REPO_NAME}/${DRONE_COMMIT_BRANCH} ${DRONE_TAG} ${DRONE_BUILD_STATUS}
-        ${DRONE_BUILD_LINK}
     when:
       status: [ success, changed ]
 
@@ -85,6 +84,5 @@ steps:
       devicename: 'Drone CI'
       template: |
         🔴 Drone Build ${DRONE_REPO_NAME}/${DRONE_COMMIT_BRANCH} ${DRONE_TAG} ${DRONE_BUILD_STATUS}
-        ${DRONE_BUILD_LINK}
     when:
       status: [ failure ]

@@ -1,4 +1,4 @@
-from ubuntu:jammy as builder
+from ubuntu:noble as builder
 RUN apt-get update && \
     apt-get install -y git wget ca-certificates build-essential && \
     wget https://go.dev/dl/go1.22.2.linux-amd64.tar.gz && \
@@ -11,7 +11,7 @@ RUN apt-get update && \
     git checkout drone && \
     go build -tags "nolimit" github.com/drone/drone/cmd/drone-server
 
-FROM ubuntu:jammy
+FROM ubuntu:noble
 EXPOSE 80 443
 VOLUME /data
 
